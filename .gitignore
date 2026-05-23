@@ -1,0 +1,58 @@
+# Build output
+**/bin/
+**/obj/
+
+# User-specific files
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio / VS Code
+.vs/
+.vscode/
+
+# NuGet
+*.nupkg
+*.snupkg
+packages/
+
+# Test / coverage
+TestResults/
+*.coverage
+*.coveragexml
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# MAUI / Xamarin platform outputs
+**/Platforms/Android/**/bin/
+**/Platforms/Android/**/obj/
+**/Platforms/iOS/**/bin/
+**/Platforms/iOS/**/obj/
+**/Platforms/MacCatalyst/**/bin/
+**/Platforms/MacCatalyst/**/obj/
+**/Platforms/Windows/**/bin/
+**/Platforms/Windows/**/obj/
+
+# Android artifacts
+*.apk
+*.aab
+*.ap_
+*.keystore
+*.jks
+
+# Apple artifacts
+*.mobileprovision
+*.dSYM/
+
+# Generated app packages
+*.msix
+*.msixbundle
+*.appx
+*.appxbundle
