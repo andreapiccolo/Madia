@@ -3,22 +3,35 @@ using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.Maui.ApplicationModel;
 using Microsoft.Maui.Controls;
-using Microsoft.Maui.Essentials;
-using Microsoft.Maui.Dispatching;
 using ZXing.Net.Maui;
+#if ANDROID || IOS || MACCATALYST
+using ZXing.Net.Maui.Controls;
+#endif
 
 namespace Madia;
 
 public partial class MainPage : ContentPage
 {
     readonly HttpClient _http = new HttpClient();
+#if ANDROID || IOS || MACCATALYST
     bool _isProcessing;
+    CameraBarcodeReaderView? cameraView;
+#endif
 
     public MainPage()
     {
         InitializeComponent();
-        RequestCameraPermissionAsync();
+#if ANDROID || IOS || MACCATALYST
+        cameraView = new CameraBarcodeReaderView
+        {
+            IsDetecting = true
+        };
+        cameraView.BarcodesDetected += CameraView_BarcodesDetected;
+        scannerHost.Children.Add(cameraView);
+        _ = RequestCameraPermissionAsync();
+#endif
     }
 
     async Task RequestCameraPermissionAsync()
@@ -29,11 +42,12 @@ public partial class MainPage : ContentPage
 
         if (status != PermissionStatus.Granted)
         {
-            await DisplayAlert("Permission", "Camera permission is required to scan barcodes.", "OK");
+            await DisplayAlertAsync("Permission", "Camera permission is required to scan barcodes.", "OK");
         }
     }
 
-    void CameraView_BarcodeDetected(object sender, BarcodeDetectionEventArgs e)
+#if ANDROID || IOS || MACCATALYST
+    void CameraView_BarcodesDetected(object? sender, BarcodeDetectionEventArgs e)
     {
         if (_isProcessing) return;
 
@@ -45,11 +59,13 @@ public partial class MainPage : ContentPage
         MainThread.BeginInvokeOnMainThread(async () =>
         {
             lblResult.Text = $"Scanned: {result}";
-            cameraView.IsDetecting = false;
+            if (cameraView is not null)
+                cameraView.IsDetecting = false;
             await LookupProductAsync(result);
             _isProcessing = false;
         });
     }
+#endif
 
     async Task LookupProductAsync(string barcode)
     {
@@ -101,6 +117,9 @@ public partial class MainPage : ContentPage
         lblName.Text = string.Empty;
         lblBrand.Text = string.Empty;
         productImage.Source = null;
-        cameraView.IsDetecting = true;
+#if ANDROID || IOS || MACCATALYST
+        if (cameraView is not null)
+            cameraView.IsDetecting = true;
+#endif
     }
 }
