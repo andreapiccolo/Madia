@@ -13,11 +13,11 @@
             VerticalOptions="End"
             BackgroundColor="#CC000000"
             Padding="12">
-            <Label x:Name="lblResult" Text="Point camera at a barcode" TextColor="White" />
-            <Image x:Name="productImage" HeightRequest="120" Aspect="AspectFit" />
-            <Label x:Name="lblName" TextColor="White" FontAttributes="Bold" />
-            <Label x:Name="lblBrand" TextColor="White" />
-            <Button Text="Restart scanner" Clicked="OnRestartClicked" />
+            <Label Text="{Binding ResultText}" TextColor="White" />
+            <Image Source="{Binding ProductImageUrl}" HeightRequest="120" Aspect="AspectFit" />
+            <Label Text="{Binding ProductName}" TextColor="White" FontAttributes="Bold" />
+            <Label Text="{Binding ProductBrand}" TextColor="White" />
+            <Button Text="Restart scanner" Command="{Binding RestartCommand}" />
         </StackLayout>
     </Grid>
 </ContentPage>
